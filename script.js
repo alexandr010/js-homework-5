@@ -1,24 +1,20 @@
-function createCarousel(slidesCount) {
-  const carousel = document.createElement('div');
-  carousel.setAttribute('id', 'carousel');
-  carousel.className = 'carousel';
-  document.body.prepend(carousel);
-
+function createSlides (slidesCount) {
   const slideList = document.createElement('ul');
   slideList.className = 'slides';
-  carousel.append(slideList);
 
   for (let i = 0; i < slidesCount; i++) {
     const slidesItem = document.createElement('li');
     slidesItem.className = 'slides__item';
     slideList.appendChild(slidesItem);
     i === 0 && slidesItem.classList.add('active');
-    slidesItem.innerHTML = `<a href = #>${i}</a>`;
+    slidesItem.innerHTML = `<a href = #>Slides${i}</a>`;
   }
+  return slideList;
+}
 
-  const indicator = document.createElement('div');
+function creatIndicators(slidesCount) {
+ const indicator = document.createElement('div');
   indicator.className = 'indicators';
-  carousel.append(indicator);
 
   for (let i = 0; i < slidesCount; i++) {
     const indicatorItem = document.createElement('span');
@@ -27,24 +23,98 @@ function createCarousel(slidesCount) {
     indicatorItem.setAttribute('data-slide-to', `${i}`);
     indicator.append(indicatorItem);
   }
+
+  return indicator;
+}
+
+
+function createControls () {
   const control = document.createElement('div');
   control.className = 'controls';
-  carousel.append(control);
   const NEXT = `<div class = "controls__item controls__next"><i class = "fas fa-chevron-right"></i></div>`;
   const PREV = `<div class = "controls__item controls__prev"><i class = "fas fa-chevron-left"></i></div>`;
   const PAUSE = `<div class = "controls__item controls__pause"><i class = "fas fa-play"></i></div>`;
   control.innerHTML = PREV + NEXT + PAUSE;
+  return control;
 
+}
+
+function createStyle() {
   const styleTag = document.createElement('style');
+  styleTag.innerHTML = `
+  .slides{
+    position: relative;
+    height: 200px;
+    background-color: red;
+    list-style: none;}
+  .slides__item{
+    position: absolute;
+    opacity: 0;
+    z-index: 1;
+    height: 100%;
+  }
+  .controls{
+    position: relative;
+  }
+  .controls__item{
+    display: flex;
+    width: 100px;
+    height: 25px;
+    border: 2px solid black;
+  }
+  .indicators{
+    display:flex;
+    }
+  .indicators__item{
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: blue;
+  }
+  .active{
+    opacity: 1;
+    z-index: 2;
+  }
+  `;
+  return styleTag;
+}
+
+
+
+
+
+function createCarousel(slidesCount) {
+
+
+  const carousel = document.getElementById('carousel');
+
+  const slideList = createSlides(slidesCount);
+  carousel.append(slideList);
+
+  carousel.append(creatIndicators(slidesCount));
+
+  carousel.append(createControls(slidesCount));
+
+  const styleTag = createStyle();
   carousel.append(styleTag);
-  // styleTag.setAttribute('style', 'display: block');
 
-  const container = document.querySelector('#carousel');
-  const slide = container.querySelector('.slides');
-  const slideItem = slide.querySelectorAll('.slides__item');
+  let indicatorContainer = document.querySelector('.indicators');
 
-  styleTag.innerHTML = `.slides{display: flex; background-color: red; list-style: none}`;
+let pointer = null;
+indicatorContainer.addEventListener('click', (event) => {
+  let target = event.target;
+   if (target.classList.contains('indicators__item')){
+    //target.classList.add('active');
+    target.style.backgroundColor = "red";
 
-  console.log(slideItem);
- }
+    if (pointer !== null) {
+      pointer.classList.remove('active');
+      pointer.removeAttribute('style');
+    }
+
+    pointer = target;
+  }
+});
+}
+
 createCarousel(5);
