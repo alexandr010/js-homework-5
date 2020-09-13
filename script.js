@@ -31,12 +31,11 @@ function creatIndicators(slidesCount) {
 function createControls () {
   const control = document.createElement('div');
   control.className = 'controls';
-  const NEXT = `<div class = "controls__item controls__next"><i class = "fas fa-chevron-right"></i></div>`;
-  const PREV = `<div class = "controls__item controls__prev"><i class = "fas fa-chevron-left"></i></div>`;
-  const PAUSE = `<div class = "controls__item controls__pause"><i class = "fas fa-play"></i></div>`;
+  const NEXT = `<div class = "controls__item controls__next"><i class = "fas fa-chevron-right">NEXT</i></div>`;
+  const PREV = `<div class = "controls__item controls__prev"><i class = "fas fa-chevron-left">PREV</i></div>`;
+  const PAUSE = `<div class = "controls__item controls__pause"><i class = "fas fa-play">PAUSE</i></div>`;
   control.innerHTML = PREV + NEXT + PAUSE;
   return control;
-
 }
 
 function createStyle() {
@@ -46,26 +45,36 @@ function createStyle() {
     position: relative;
     height: 200px;
     background-color: red;
-    list-style: none;}
+    list-style: none;
+  }
   .slides__item{
     position: absolute;
     opacity: 0;
     z-index: 1;
     height: 100%;
+    font-size: 30px;
+    padding: 20px 0 0 0;
   }
   .controls{
     position: relative;
   }
   .controls__item{
     display: flex;
+    margin: 5px;
     width: 100px;
     height: 25px;
     border: 2px solid black;
+  }
+  .fas{
+   padding: 5px 5px 5px 25px;
+   color: violet;
+
   }
   .indicators{
     display:flex;
     }
   .indicators__item{
+    margin: 0 0 10px 0;
     height: 20px;
     width: 20px;
     border-radius: 50%;
@@ -80,11 +89,7 @@ function createStyle() {
 }
 
 
-
-
-
 function createCarousel(slidesCount) {
-
 
   const carousel = document.getElementById('carousel');
 
@@ -100,21 +105,18 @@ function createCarousel(slidesCount) {
 
   let indicatorContainer = document.querySelector('.indicators');
 
-let pointer = null;
-indicatorContainer.addEventListener('click', (event) => {
-  let target = event.target;
-   if (target.classList.contains('indicators__item')){
-    //target.classList.add('active');
-    target.style.backgroundColor = "red";
+  let pointer = null;
+  indicatorContainer.addEventListener('click', (event) => {
+    let target = event.target;
+    if (target.classList.contains('indicators__item')){
+      target.style.backgroundColor = "red";
 
-    if (pointer !== null) {
-      pointer.classList.remove('active');
-      pointer.removeAttribute('style');
+      if (pointer !== null) {
+        pointer.removeAttribute('style');
+      }
+      pointer = target;
     }
-
-    pointer = target;
-  }
-});
+  });
 }
 
 createCarousel(5);
